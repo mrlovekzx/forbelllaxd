@@ -1,0 +1,219 @@
+/* ===== สีและธีม (แก้สีได้ที่นี่) ===== */
+:root {
+  color-scheme: light;
+  --bg: #fdeff2;
+  --ink: #3b1f36;
+  --muted: #8a6a80;
+  --card: #fffafb;
+  --line: #e8b9c8;
+  --accent: #e0487a;
+  --accent-ink: #fff;
+  --shadow: rgba(150, 50, 90, .14);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* โหมดมืดอัตโนมัติตามเครื่อง */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #241320;
+    --ink: #fbe9f0;
+    --muted: #c79cb3;
+    --card: #35203a;
+    --line: #6b3f63;
+    --accent: #ff6b9d;
+    --accent-ink: #2a0f1f;
+    --shadow: rgba(0, 0, 0, .4);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Mali", "Sarabun", "Noto Sans Thai", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+main { max-width: 520px; margin: 0 auto; padding: 36px 20px 56px; }
+
+/* ===== ส่วนหัว ===== */
+header { text-align: center; margin-bottom: 28px; }
+
+.hero {
+  display: inline-block;
+  font-size: 54px;
+  transform-origin: 50% 90%;
+  animation: sway 3s ease-in-out infinite;
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+
+h1 { margin: 6px 0 8px; font-size: 30px; line-height: 1.25; font-weight: 700; }
+header p { margin: 0; color: var(--muted); }
+
+.count {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1.5px dashed var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+.count b { color: var(--accent); }
+
+/* ===== ตั๋ว ===== */
+.ticket {
+  position: relative;
+  margin-bottom: 22px;
+  overflow: hidden;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+/* รอยเว้าซ้าย-ขวาตรงเส้นปรุ */
+.ticket::before,
+.ticket::after {
+  content: "";
+  position: absolute;
+  top: var(--cut, 98px);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  transform: translateY(-50%);
+}
+.ticket::before { left: -14px; }
+.ticket::after { right: -14px; }
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 196px;
+  padding: 20px 24px;
+  background: linear-gradient(90deg, var(--tint) 0 8px, transparent 8px);
+}
+.main .emoji {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  font-size: 44px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--tint) 22%, var(--card));
+}
+.main h2 { margin: 0 0 4px; font-size: 20px; line-height: 1.3; }
+.main p { margin: 0; color: var(--muted); font-size: 14px; }
+.no { margin-bottom: 2px; font-size: 12px; color: var(--muted); }
+
+/* ส่วนล่างของตั๋ว (ใต้เส้นปรุ) */
+.stub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 24px 18px;
+  border-top: 2px dashed var(--line);
+}
+.stub small { color: var(--muted); font-size: 13px; }
+
+button { font: inherit; border: 0; cursor: pointer; }
+
+.use {
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  transition: transform .15s;
+}
+.use:active { transform: scale(.94); }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* ===== ตั๋วที่ใช้แล้ว ===== */
+.ticket.used .main { opacity: .55; filter: grayscale(.6); }
+.ticket.used .use { display: none; }
+
+.stamp {
+  display: none;
+  position: absolute;
+  top: 34px;
+  right: 20px;
+  padding: 4px 14px;
+  border: 3px solid var(--accent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 700;
+  transform: rotate(-12deg);
+}
+.ticket.used .stamp { display: block; animation: slam .35s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes slam {
+  from { transform: rotate(-12deg) scale(2.4); opacity: 0; }
+  to { transform: rotate(-12deg) scale(1); opacity: 1; }
+}
+
+.again {
+  display: none;
+  padding: 4px;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: underline;
+}
+.ticket.used .again { display: inline; }
+
+footer { margin-top: 30px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* ===== กล่องยืนยัน ===== */
+dialog {
+  width: calc(100% - 40px);
+  max-width: 320px;
+  padding: 28px 24px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--card);
+  color: var(--ink);
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+}
+dialog::backdrop { background: rgba(60, 15, 40, .5); }
+dialog .big { font-size: 48px; }
+dialog h3 { margin: 6px 0 4px; }
+dialog p { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+
+.row { display: flex; gap: 10px; }
+.row button { flex: 1; padding: 10px; border-radius: 999px; font-weight: 600; }
+.no-btn { background: var(--bg); color: var(--ink); }
+.yes-btn { background: var(--accent); color: var(--accent-ink); }
+
+/* ===== หัวใจลอย ===== */
+.heart {
+  position: fixed;
+  bottom: -30px;
+  z-index: 9;
+  font-size: 26px;
+  pointer-events: none;
+  animation: float 2.2s ease-out forwards;
+}
+@keyframes float { to { transform: translateY(-110vh) rotate(25deg); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero, .heart, .stamp { animation: none !important; }
+}
